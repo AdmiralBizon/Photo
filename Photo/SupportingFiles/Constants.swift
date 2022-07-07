@@ -14,7 +14,7 @@ struct K {
     static let searchPhotosPath = "/search/photos"
     static let photoDetailsPath = "/photos/"
     static let photosOnPage = 30
-    static let token = "UXp6ZIY4e2A8aZylXzv7GEWUufa0zLlhjMl1LAY3w-g"
     static let detailsViewControllerIndentifier = "PhotoDetailsViewController"
     static let detailCellIdentifier = "DetailCell"
+    static let userDefaultsKey = "FavoritePhotos"
 }

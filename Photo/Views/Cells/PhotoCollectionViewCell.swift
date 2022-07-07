@@ -14,7 +14,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     var photo: Photo! {
         didSet {
-            guard let imageUrl = photo.urls["thumb"],
+            guard let imageUrl = photo.urls["regular"],
                   let url = URL(string: imageUrl) else { return }
             photoImageView.sd_setImage(with: url, completed: nil)
         }

@@ -7,8 +7,15 @@
 
 import Foundation
 
-struct SearchResponse: Decodable {
+struct SearchResponse: Codable {
     let total: Int
-    let total_pages: Int
+    let totalPages: Int
     let results: [Photo]
+    
+    enum CodingKeys: String, CodingKey {
+        case total
+        case totalPages = "total_pages"
+        case results
+    }
+    
 }

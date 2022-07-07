@@ -2,7 +2,7 @@
 //  PhotoDetailsViewController.swift
 //  Photo
 //
-//  Created by Ilya on 30.06.2022.
+//  Created by Ilya on 05.07.2022.
 //
 
 import UIKit
@@ -10,35 +10,59 @@ import Combine
 import SDWebImage
 
 class PhotoDetailsViewController: UIViewController {
-
-    var photoId = ""
     
+    // MARK: - IB Outlets
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var favoritesButton: UIBarButtonItem!
+    @IBOutlet weak var detailInfoButton: UIBarButtonItem!
     
-    private let viewModel = PhotoViewModel()
+    // MARK: - Public Properties
+    var photoId = ""
+    var isFavorite: Bool!
+    var viewModel: PhotoViewModel!
+    
+    // MARK: - Private Properties
     private var cancellables: Set<AnyCancellable> = []
     
+    // MARK: - Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
+        setupToolbar()
         setupBinders()
         viewModel.fetchPhotoDetails(photoId: photoId)
     }
     
-    private func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(changeFavoritesList))
+    // MARK: - IB Actions
+    @IBAction func showHideDetails(_ sender: Any) {
+        tableView.isHidden = tableView.isHidden ? false : true
+        setupToolbar()
     }
     
-    @objc func changeFavoritesList(_ sender: UIButton) {
-        
+    @IBAction func favoritesButtonPressed(_ sender: UIBarButtonItem) {
+        if isFavorite {
+            viewModel.removeFromFavorites(photo: viewModel.currentPhoto!)
+            isFavorite = false
+        } else {
+            viewModel.addToFavorites(photo: viewModel.currentPhoto!)
+            isFavorite = true
+        }
+        setupToolbar()
+    }
+    
+    // MARK: - Private Methods
+    private func setupToolbar() {
+        let favoritesButtonImage = isFavorite ? "heart.fill" : "heart"
+        favoritesButton.image = UIImage(systemName: favoritesButtonImage)
+        let detailsButtonImage = tableView.isHidden ? "info.circle" : "info.circle.fill"
+        detailInfoButton.image = UIImage(systemName: detailsButtonImage)
     }
     
     private func setupBinders() {
-        viewModel.$data.sink { [weak self] photoDetails in
+        viewModel.$currentPhoto.sink { [weak self] currentPhoto in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
-                guard let imageUrl = self?.viewModel.data?.urls["thumb"],
+                guard let imageUrl = currentPhoto?.urls["regular"],
                       let url = URL(string: imageUrl) else { return }
                 self?.photoImageView.sd_setImage(with: url, completed: nil)
             }
@@ -66,44 +90,44 @@ class PhotoDetailsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
-
 extension PhotoDetailsViewController: UITableViewDataSource, UITableViewDelegate {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        4
+        5
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        section == 0 ? 0 : 1
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.detailCellIdentifier, for: indexPath)
         
         var cellText = ""
         
         switch indexPath.section {
-        case 0: cellText = "\(viewModel.data?.user.name ?? "") (@\(viewModel.data?.user.username ?? ""))"
-            let name = viewModel.data?.user.name ?? ""
-            let username = viewModel.data?.user.username ?? ""
+        case 1: cellText = "\(viewModel.currentPhoto?.user.name ?? "") (@\(viewModel.currentPhoto?.user.username ?? ""))"
+            let name = viewModel.currentPhoto?.user.name ?? ""
+            let username = viewModel.currentPhoto?.user.username ?? ""
             if !name.isEmpty {
                 cellText = "\(name) "
             }
             if !username.isEmpty {
                 cellText = cellText + "(@\(username))"
             }
-        case 1:
-            let city = viewModel.data?.location?.city ?? ""
-            let country = viewModel.data?.location?.country ?? ""
+        case 2:
+            let city = viewModel.currentPhoto?.location?.city ?? ""
+            let country = viewModel.currentPhoto?.location?.country ?? ""
             if !city.isEmpty {
                 cellText = "\(city), "
             }
             if !country.isEmpty {
                 cellText = cellText + country
             }
-        case 2:
-            cellText = changeDateFormat(string: viewModel.data?.created_at ?? "")
-        case 3: cellText = "\(viewModel.data?.downloads ?? 0)"
+        case 3:
+            cellText = changeDateFormat(string: viewModel.currentPhoto?.createdDate ?? "")
+        case 4: cellText = "\(viewModel.currentPhoto?.downloads ?? 0)"
+            
         default: cellText = ""
         }
         
@@ -118,17 +142,16 @@ extension PhotoDetailsViewController: UITableViewDataSource, UITableViewDelegate
         return cell
         
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         switch section {
-        case 0: return "Author"
-        case 1: return "Location"
-        case 2: return "Published on"
-        case 3: return "Downloads"
+        case 0: return nil
+        case 1: return "Author"
+        case 2: return "Location"
+        case 3: return "Published on"
+        case 4: return "Downloads"
         default: return nil
         }
-        
     }
-    
+
 }
