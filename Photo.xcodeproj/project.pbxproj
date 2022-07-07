@@ -39,8 +39,8 @@
 		091CE918286B70790048B125 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		091CE91E286B79190048B125 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		09334B1A286C540F00D4996F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		095CC2C428772FAE00CCDBF7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		095CC2C5287732C400CCDBF7 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		095CC2C728775AC700CCDBF7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		0961DA84286CA4B200854E6F /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		0961DA87286CCAA600854E6F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0961DA89286CD5C300854E6F /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
@@ -69,8 +69,8 @@
 		091CE8FE286B70770048B125 = {
 			isa = PBXGroup;
 			children = (
+				095CC2C728775AC700CCDBF7 /* Config.xcconfig */,
 				095CC2C5287732C400CCDBF7 /* .gitignore */,
-				095CC2C428772FAE00CCDBF7 /* Config.xcconfig */,
 				091CE909286B70770048B125 /* Photo */,
 				091CE908286B70770048B125 /* Products */,
 				318224298C0975186EC9F46C /* Pods */,
@@ -332,7 +332,7 @@
 /* Begin XCBuildConfiguration section */
 		091CE919286B70790048B125 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 095CC2C428772FAE00CCDBF7 /* Config.xcconfig */;
+			baseConfigurationReference = 095CC2C728775AC700CCDBF7 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -394,7 +394,7 @@
 		};
 		091CE91A286B70790048B125 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 095CC2C428772FAE00CCDBF7 /* Config.xcconfig */;
+			baseConfigurationReference = 095CC2C728775AC700CCDBF7 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
